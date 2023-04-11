@@ -10,3 +10,5 @@ spring:
     password: docker
     schemas: public
 
+server:
+  port : 8081

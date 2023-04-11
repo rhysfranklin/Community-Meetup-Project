@@ -1,10 +1,10 @@
 CREATE TABLE organiser(
-  id          int PRIMARY KEY,
+  id          serial PRIMARY KEY,
   name        varchar(255)
 );
 
 CREATE TABLE event(
-  eventId            int PRIMARY KEY,
+  eventId            serial PRIMARY KEY,
   messageId          varchar(255) NOT NULL,
   organiserId        int,
   creationTimestamp  timestamp DEFAULT current_timestamp,
