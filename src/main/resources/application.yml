@@ -10,5 +10,8 @@ spring:
     password: docker
     schemas: public
 
+logging.level:
+  com.slack.api: DEBUG
 server:
-  port : 8081
+  port: 3000
+
