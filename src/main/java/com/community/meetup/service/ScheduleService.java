@@ -19,7 +19,7 @@ public class ScheduleService {
     @Value("${CHANNEL_ID}")
     private String channelId;
 
-    @Scheduled(cron = "001**")
+    @Scheduled(cron = "0 0 13 1 * *")
     public void scheduleMessage() throws IOException, SlackApiException {
         log.info("sending scheduled message to slack");
         String message = "If you are interested in attending an upcoming social event please react with an emoji to express your interest :smiley:";
