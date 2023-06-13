@@ -4,9 +4,9 @@ CREATE TABLE organiser(
 );
 
 CREATE TABLE event(
-  eventId            serial PRIMARY KEY,
-  messageId          varchar(255) NOT NULL,
-  organiserId        int,
-  creationTimestamp  timestamp DEFAULT current_timestamp,
-CONSTRAINT fk_organiserId FOREIGN KEY(organiserId) REFERENCES organiser(id)
+  event_id            serial PRIMARY KEY,
+  message_id          varchar(255) NOT NULL,
+  organiser_id        int,
+  creation_timestamp  timestamp DEFAULT current_timestamp,
+CONSTRAINT fk_organiserId FOREIGN KEY(organiser_id) REFERENCES organiser(id)
 );
