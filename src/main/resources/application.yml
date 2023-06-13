@@ -15,3 +15,4 @@ logging.level:
 server:
   port: 3000
 
+CHANNEL_ID: C04UUHZ65FU
