@@ -23,12 +23,8 @@ public class EventService {
     }
 
     public long getMostRecentOrganiser(){
-        Optional<Event> optEvent = eventRepo.findFirstByOrderByDescCreationTimestamp();
-        if(optEvent.isPresent()){
-            return optEvent.get().getOrganiserId();
-        } else {
-            return 1;
-        }
+        Optional<Event> optEvent = eventRepo.findFirstByOrderByCreationTimestampDesc();
+        return optEvent.map(Event::getOrganiserId).orElse(1L);
     }
 
     public Organiser getNextOrganiser() throws Exception {

@@ -1,14 +1,18 @@
 package com.community.meetup.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Getter
 @Setter
 @Table(name="event")
+@NoArgsConstructor
 public class Event {
 
     @Id
@@ -19,7 +23,8 @@ public class Event {
 
     private long organiserId;
 
-    private String creationTimestamp;
+    @CreationTimestamp
+    private Timestamp creationTimestamp;
 
     public Event(String messageId, long organiserId) {
         this.messageId = messageId;

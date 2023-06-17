@@ -9,6 +9,6 @@ import java.util.Optional;
 @Repository
 public interface EventRepo extends CrudRepository<Event, Long> {
 
-    public Optional<Event> findFirstByOrderByDescCreationTimestamp();
+    public Optional<Event> findFirstByOrderByCreationTimestampDesc();
 
 }
