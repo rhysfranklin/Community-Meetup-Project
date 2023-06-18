@@ -1,6 +1,7 @@
 package com.community.meetup.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name="organiser")
+@NoArgsConstructor
 public class Organiser {
 
     @Id
