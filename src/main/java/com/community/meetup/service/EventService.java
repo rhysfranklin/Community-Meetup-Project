@@ -27,6 +27,11 @@ public class EventService {
         return optEvent.map(Event::getOrganiserId).orElse(1L);
     }
 
+    public Optional<String> getMostRecentMessageId(){
+        Optional<Event> optEvent = eventRepo.findFirstByOrderByCreationTimestampDesc();
+        return optEvent.map(Event::getMessageId);
+    }
+
     public Organiser getNextOrganiser() throws Exception {
         long mostRecentOrganiser = getMostRecentOrganiser();
         long total = organiserRepo.count();
