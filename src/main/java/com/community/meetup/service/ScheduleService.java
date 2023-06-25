@@ -37,7 +37,7 @@ public class ScheduleService {
         eventService.save(event);
     }
 
-    @Scheduled(cron = "0 0 20 1 * *")
+    @Scheduled(cron = "0 0 13 7 * *")
     public void scheduleFollowUpMessage() throws Exception {
         log.info("sending follow up message to slack");
         Optional<String> optMessageId = eventService.getMostRecentMessageId();
