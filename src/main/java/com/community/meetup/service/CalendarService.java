@@ -49,10 +49,6 @@ public class CalendarService {
                 .setTimeZone("Europe/London");
         event.setEnd(end);
 
-        EventAttendee[] attendees = new EventAttendee[] {
-                new EventAttendee().setEmail("lpage@example.com"),
-                new EventAttendee().setEmail("sbrin@example.com"),
-        };
         event.setAttendees(createAttendees(emails));
 
 
