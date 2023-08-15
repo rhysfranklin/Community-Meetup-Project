@@ -26,6 +26,10 @@ public class CalendarService {
 
     private static final String APPLICATION_NAME = "Community meetup";
 
+    public void createEvent(){
+
+    }
+
     public void createCalendarEvent(DateTime startDateTime, DateTime endDateTime, List<String> emails) throws GeneralSecurityException, IOException {
 
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
