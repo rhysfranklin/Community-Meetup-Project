@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,9 +25,13 @@ public class CalendarService {
     @Autowired
     private GoogleConfig config;
 
+    @Autowired
+    private SlackService slackService;
+
     private static final String APPLICATION_NAME = "Community meetup";
 
-    public void createEvent(){
+    public void createEvent(Instant startDateTime, Instant endDateTime){
+
 
     }
 

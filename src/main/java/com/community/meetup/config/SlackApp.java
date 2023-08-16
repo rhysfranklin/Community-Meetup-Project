@@ -48,9 +48,13 @@ public class SlackApp {
                     .title(viewTitle(vt -> vt.type("plain_text").text("Create calendar event")))
                     .blocks(asBlocks(
                             input(input -> input
-                                    .blockId("date-block")
-                                    .element(datetimePicker(pti -> pti.actionId("datetime_input").initialDateTime(Long.valueOf(Instant.now().getEpochSecond()).intValue())))
-                                    .label(plainText(pt -> pt.text("Pick a date & time for the deadline"))))
+                                    .blockId("start-block")
+                                    .element(datetimePicker(pti -> pti.actionId("start_input").initialDateTime(Long.valueOf(Instant.now().getEpochSecond()).intValue())))
+                                    .label(plainText(pt -> pt.text("Pick a start date & time for the event")))),
+                            input(input -> input
+                                    .blockId("end-block")
+                                    .element(datetimePicker(pti -> pti.actionId("end_input").initialDateTime(Long.valueOf(Instant.now().getEpochSecond()).intValue())))
+                                    .label(plainText(pt -> pt.text("Pick a end date & time for the event"))))
                     ))
                     .close(viewClose(vc -> vc.type("plain_text").text("Cancel")))
                     .submit(viewSubmit(vs -> vs.type("plain_text").text("Submit"))));
@@ -73,16 +77,24 @@ public class SlackApp {
         app.viewSubmission("calendar-event", (req, ctx) -> {
             System.out.println("submission received");
             Map<String, Map<String, ViewState.Value>> stateValues = req.getPayload().getView().getState().getValues();
-            System.out.println(stateValues.get("date-block").containsKey("datetime_input"));
-            Instant datetime = Instant.ofEpochSecond(stateValues.get("date-block").get("datetime_input").getSelectedDateTime());
-            System.out.println(datetime);
+            Instant startDateTime = Instant.ofEpochSecond(stateValues.get("start-block").get("start_input").getSelectedDateTime());
+            Instant endDateTime = Instant.ofEpochSecond(stateValues.get("end-block").get("end_input").getSelectedDateTime());
+
             Map<String, String> errors = new HashMap<>();
-            if (datetime.isBefore(Instant.now())) {
-                errors.put("date-block", "An event can't be created for a date in the past");
+            if (startDateTime.isBefore(Instant.now())) {
+                errors.put("start-block", "An event can't be created for a date in the past");
             }
+            if (endDateTime.isBefore(Instant.now())) {
+                errors.put("end-block", "An event can't be created for a date in the past");
+            }
+            if (endDateTime.isBefore(startDateTime)) {
+                errors.put("end-block", "End date and time can't be before start date and time");
+            }
+
             if (!errors.isEmpty()) {
                 return ctx.ack(r -> r.responseAction("errors").errors(errors));
             } else {
+                calendar.createEvent(startDateTime, endDateTime);
                 System.out.println("google event created");
                 return ctx.ack();
             }
