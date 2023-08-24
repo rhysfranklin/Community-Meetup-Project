@@ -1,6 +1,7 @@
 package com.community.meetup.service;
 
 import com.community.meetup.config.GoogleConfig;
+import com.community.meetup.repository.EventRepo;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.util.DateTime;
@@ -9,15 +10,16 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventReminder;
+import com.slack.api.methods.SlackApiException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+
 
 @Service
 public class CalendarService {
@@ -28,11 +30,22 @@ public class CalendarService {
     @Autowired
     private SlackService slackService;
 
+    @Autowired
+    private EventRepo eventRepo;
+
     private static final String APPLICATION_NAME = "Community meetup";
 
-    public void createEvent(Instant startDateTime, Instant endDateTime){
+    @Value("${CHANNEL_ID}")
+    private String channelId;
 
-
+    public void createEvent(Instant startDateTime, Instant endDateTime) throws IOException, SlackApiException, GeneralSecurityException {
+        Optional<com.community.meetup.model.Event> event = eventRepo.findFirstByOrderByCreationTimestampDesc();
+        String token = System.getenv("SLACK_BOT_TOKEN");
+        if(event.isPresent()){
+            Set<String> emails = slackService.getEmailsFromPost(event.get().getMessageId(), channelId, token);
+            new DateTime(startDateTime.toEpochMilli());
+            createCalendarEvent(new DateTime(startDateTime.toEpochMilli()), new DateTime(endDateTime.toEpochMilli()), new ArrayList<>(emails));
+        }
     }
 
     public void createCalendarEvent(DateTime startDateTime, DateTime endDateTime, List<String> emails) throws GeneralSecurityException, IOException {
