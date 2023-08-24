@@ -43,6 +43,7 @@ public class CalendarService {
         String token = System.getenv("SLACK_BOT_TOKEN");
         if(event.isPresent()){
             Set<String> emails = slackService.getEmailsFromPost(event.get().getMessageId(), channelId, token);
+            System.out.println("emails: " + emails.toString());
             new DateTime(startDateTime.toEpochMilli());
             createCalendarEvent(new DateTime(startDateTime.toEpochMilli()), new DateTime(endDateTime.toEpochMilli()), new ArrayList<>(emails));
         }

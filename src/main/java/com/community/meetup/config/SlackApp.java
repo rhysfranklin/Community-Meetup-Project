@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.security.GeneralSecurityException;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -94,7 +94,11 @@ public class SlackApp {
             if (!errors.isEmpty()) {
                 return ctx.ack(r -> r.responseAction("errors").errors(errors));
             } else {
-                calendar.createEvent(startDateTime, endDateTime);
+                try {
+                    calendar.createEvent(startDateTime, endDateTime);
+                } catch (GeneralSecurityException e) {
+                    e.printStackTrace();
+                }
                 System.out.println("google event created");
                 return ctx.ack();
             }
